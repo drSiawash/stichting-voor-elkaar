@@ -45,6 +45,17 @@
         nav a { margin-left: 20px; text-decoration: none; color: var(--text-main); font-weight: 500; }
         nav a:hover { color: var(--primary); }
         .btn-nav { background: var(--secondary); color: white; padding: 10px 20px; border-radius: 25px; }
+
+        /* Hamburger button — verborgen op desktop */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: 0;
+            padding: 8px;
+            cursor: pointer;
+            color: var(--primary-dark);
+        }
+        .menu-toggle svg { display: block; }
         .btn-nav:hover { background: #E65100; color: white; }
 
         .hero {
@@ -118,19 +129,30 @@
         @media (max-width: 768px) {
             header {
                 padding: 12px 4%;
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+                flex-wrap: wrap;
             }
             .logo { font-size: 1.1rem; gap: 8px; }
             .logo img { height: 32px; }
+
+            .menu-toggle { display: block; }
+
             nav {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 6px 14px;
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0;
+                margin-top: 12px;
+                border-top: 1px solid #E0E0E0;
+                padding-top: 12px;
             }
-            nav a { margin-left: 0; font-size: 0.95rem; }
+            nav.open { display: flex; }
+            nav a {
+                margin-left: 0;
+                padding: 12px 4px;
+                border-bottom: 1px solid #F0F0F0;
+                font-size: 1rem;
+            }
+            nav a:last-child { border-bottom: 0; }
 
             .section { padding: 50px 5%; }
             .grid-2, .tools-grid { grid-template-columns: 1fr; gap: 30px; }
@@ -170,7 +192,10 @@
 
     <header>
         <a href="#" class="logo"><img src="logo.jpg" alt="Stichting Voor Elkaar logo"><span class="logo-text">Stichting Voor Elkaar</span></a>
-        <nav>
+        <button class="menu-toggle" aria-label="Menu" aria-expanded="false" onclick="const n=document.getElementById('main-nav'); const open=n.classList.toggle('open'); this.setAttribute('aria-expanded', open);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+        </button>
+        <nav id="main-nav" onclick="if(event.target.tagName==='A'){this.classList.remove('open'); document.querySelector('.menu-toggle').setAttribute('aria-expanded','false');}">
             <a href="#visie">Onze Visie</a>
             <a href="#middelen">Wat we doen</a>
             <a href="#pilot">Pilot Centrum</a>
