@@ -1,6 +1,6 @@
-# Stichting Voor Elkaar — website
+# Voor Elkaar Stichting — website
 
-Website van Stichting Voor Elkaar, een buurtinitiatief vanuit Huisartsenpraktijk Wijnhaven (Rotterdam Centrum).
+Website van Voor Elkaar Stichting, een buurtinitiatief vanuit Huisartsenpraktijk Wijnhaven (Rotterdam Centrum).
 
 Live: https://voorelkaarstichting.nl
 
