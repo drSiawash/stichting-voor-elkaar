@@ -1,0 +1,14 @@
+# Whitelist: alles negeren, behalve de bestanden die de site nodig heeft.
+# Zo blijft Strategie/Business Case/huisstijl-werkmap buiten de Git-repo.
+*
+
+# Files die wél mee moeten
+!.gitignore
+!README.md
+!netlify.toml
+!index.html
+!logo.jpg
+!hero.png
+!foto3.png
+!foto4.png
+!ONDERNEMERS_FOTO.png
