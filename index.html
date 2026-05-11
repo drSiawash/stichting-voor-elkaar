@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voor Elkaar | Samen leven, samen doen</title>
+    <meta name="description" content="Voor Elkaar brengt buurtgenoten in Rotterdam Centrum bij elkaar. Een initiatief vanuit huisartsenpraktijk Wijnhaven. Aanmelden via de Samen-app.">
     <style>
         :root {
             --primary: #00796B;
             --primary-dark: #004D40;
             --secondary: #FF8F00;
+            --secondary-dark: #E65100;
             --bg-light: #F9FAFB;
             --bg-warm: #FFF8E1;
+            --bg-soft: #F1F8F6;
             --text-main: #2C3E50;
             --text-light: #546E7A;
+            --line: #E6EDEA;
+            --radius: 20px;
+            --radius-lg: 28px;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -22,31 +30,50 @@
             color: var(--text-main);
             background-color: var(--bg-light);
             line-height: 1.6;
+            font-size: 17px;
         }
 
-        h1, h2, h3 { color: var(--primary-dark); margin-bottom: 15px; }
-        p { font-size: 1.1rem; margin-bottom: 20px; }
+        h1, h2, h3 { color: var(--primary-dark); margin: 0 0 16px; line-height: 1.2; }
+        h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); letter-spacing: -0.5px; }
+        h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); letter-spacing: -0.3px; }
+        h3 { font-size: 1.25rem; }
+        p { font-size: 1.1rem; margin: 0 0 16px; }
         p a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
         p a:hover { color: var(--primary-dark); }
 
+        a:focus-visible, button:focus-visible, summary:focus-visible {
+            outline: 3px solid var(--secondary);
+            outline-offset: 3px;
+            border-radius: 6px;
+        }
+
+        /* ---------- Header (pill-stijl) ---------- */
+        .header-wrap {
+            position: sticky;
+            top: 16px;
+            z-index: 100;
+            padding: 0 16px;
+        }
         header {
+            max-width: 1180px;
+            margin: 16px auto 0;
             background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 15px 5%;
+            border-radius: 999px;
+            box-shadow: 0 6px 24px rgba(0,77,64,0.08);
+            padding: 10px 18px 10px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            border: 1px solid var(--line);
         }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 40px; width: auto; }
-        nav a { margin-left: 20px; text-decoration: none; color: var(--text-main); font-weight: 500; }
-        nav a:hover { color: var(--primary); }
-        .btn-nav { background: var(--secondary); color: white; padding: 10px 20px; border-radius: 25px; }
+        .logo { font-size: 1.2rem; font-weight: 700; color: var(--primary-dark); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo img { height: 36px; width: auto; }
+        nav { display: flex; align-items: center; gap: 6px; }
+        nav a { padding: 8px 14px; text-decoration: none; color: var(--text-main); font-weight: 500; border-radius: 999px; font-size: 0.98rem; }
+        nav a:hover { background: var(--bg-soft); color: var(--primary-dark); }
+        .btn-nav { background: var(--secondary); color: white !important; padding: 10px 20px !important; margin-left: 8px; }
+        .btn-nav:hover { background: var(--secondary-dark) !important; }
 
-        /* Hamburger button — verborgen op desktop */
         .menu-toggle {
             display: none;
             background: none;
@@ -56,101 +83,306 @@
             color: var(--primary-dark);
         }
         .menu-toggle svg { display: block; }
-        .btn-nav:hover { background: #E65100; color: white; }
 
-        .hero {
-            position: relative;
-            overflow: hidden;
-            min-height: 620px;
-            background: #004D40 url('foto41.png') center/cover no-repeat;
-            color: white;
+        /* ---------- Layout ---------- */
+        .section { padding: 80px 24px; max-width: 1180px; margin: 0 auto; }
+        .section-alt { background-color: white; max-width: none; padding: 80px 24px; }
+        .section-alt > .inner { max-width: 1180px; margin: 0 auto; }
+        .section-soft { background-color: var(--bg-soft); max-width: none; padding: 80px 24px; }
+        .section-soft > .inner { max-width: 1180px; margin: 0 auto; }
+
+        .grid-2 { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+
+        /* ---------- Hero ---------- */
+        .hero { padding: 56px 24px 72px; max-width: 1180px; margin: 0 auto; }
+        .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+        .hero h1 { color: var(--primary-dark); }
+        .hero .lead { font-size: 1.25rem; color: var(--text-main); max-width: 540px; }
+        .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+
+        .hero-visual { position: relative; }
+        .hero-photo {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(0,77,64,0.18);
         }
-        .hero::before {
-            content: '';
+        .float-card {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(to right, rgba(0,77,64,0.88) 0%, rgba(0,77,64,0.65) 35%, rgba(0,77,64,0) 65%);
-        }
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            padding: 90px 8% 90px 6%;
-            max-width: 620px;
-        }
-        .hero-content h1 { color: white; font-size: 3rem; margin: 0 0 8px; line-height: 1.15; }
-        .hero-content h2 { color: #FFF8E1; font-weight: 300; font-size: 1.7rem; margin: 0 0 24px; }
-        .hero-content p { color: white; font-size: 1.2rem; line-height: 1.55; max-width: 520px; margin-bottom: 0; }
-        .btn-primary { background: var(--secondary); color: white; padding: 15px 30px; text-decoration: none; font-size: 1.2rem; border-radius: 30px; font-weight: bold; display: inline-block; margin: 10px; }
-        .btn-primary:hover { background: #E65100; }
-        .btn-secondary { background: var(--primary); color: white; padding: 15px 30px; text-decoration: none; font-size: 1.2rem; border-radius: 30px; font-weight: bold; display: inline-block; margin: 10px; }
-        .btn-secondary:hover { background: var(--primary-dark); }
-        .btn-outline { background: transparent; color: white; border: 2px solid white; padding: 13px 28px; text-decoration: none; font-size: 1.2rem; border-radius: 30px; font-weight: bold; display: inline-block; margin: 10px; }
-
-        .section { padding: 80px 5%; max-width: 1200px; margin: auto; }
-        .section-alt { background-color: white; }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-
-        /* Twee uitklapbare knoppen voor de middelen */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 40px;
-        }
-        .tool-card {
+            left: -24px;
+            bottom: 32px;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            overflow: hidden;
-            border: 2px solid transparent;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            border-radius: var(--radius);
+            box-shadow: 0 14px 36px rgba(0,77,64,0.16);
+            padding: 16px 18px;
+            width: 260px;
+            border: 1px solid var(--line);
         }
-        .tool-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
-        .tool-card[open] { border-color: var(--primary); }
-        .tool-card summary {
+        .float-card .tag {
+            display: inline-block;
+            background: var(--bg-warm);
+            color: var(--secondary-dark);
+            font-weight: 600;
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            margin-bottom: 8px;
+        }
+        .float-card .activity { font-weight: 700; color: var(--primary-dark); font-size: 1.05rem; margin-bottom: 4px; }
+        .float-card .meta { font-size: 0.88rem; color: var(--text-light); margin-bottom: 12px; }
+        .avatars { display: flex; align-items: center; }
+        .avatars span {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-left: -8px;
+            background: var(--primary);
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.78rem; font-weight: 700;
+        }
+        .avatars span:first-child { margin-left: 0; background: var(--secondary); }
+        .avatars span:nth-child(2) { background: var(--primary); }
+        .avatars span:nth-child(3) { background: var(--primary-dark); }
+        .avatars .count { background: var(--bg-warm); color: var(--secondary-dark); font-weight: 700; }
+
+        .float-card-top {
+            position: absolute;
+            right: -16px;
+            top: 32px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: 0 14px 36px rgba(0,77,64,0.16);
+            padding: 12px 16px;
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .float-card-top .stars { color: var(--secondary); font-size: 1rem; }
+        .float-card-top .rating { font-weight: 700; color: var(--primary-dark); }
+        .float-card-top .sub { font-size: 0.78rem; color: var(--text-light); }
+
+        /* ---------- Buttons ---------- */
+        .btn { display: inline-block; padding: 14px 28px; border-radius: 999px; font-size: 1.05rem; font-weight: 700; text-decoration: none; transition: transform .08s ease, background .15s ease; }
+        .btn:active { transform: translateY(1px); }
+        .btn-primary { background: var(--secondary); color: white; }
+        .btn-primary:hover { background: var(--secondary-dark); color: white; }
+        .btn-secondary { background: var(--primary); color: white; }
+        .btn-secondary:hover { background: var(--primary-dark); color: white; }
+        .btn-ghost { background: white; color: var(--primary-dark); border: 2px solid var(--line); }
+        .btn-ghost:hover { border-color: var(--primary); color: var(--primary-dark); }
+
+        /* ---------- Concept-kaart ---------- */
+        .concept-card {
+            background: var(--bg-warm);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+        }
+        .concept-card .grid-2 { gap: 48px; }
+        .concept-card img { width: 100%; border-radius: var(--radius); aspect-ratio: 4/3; object-fit: cover; box-shadow: 0 10px 28px rgba(0,77,64,0.12); }
+        .kicker { color: var(--secondary-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin-bottom: 8px; }
+
+        /* ---------- App-blok ---------- */
+        .app-block {
+            background: var(--primary-dark);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 56px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+        .app-block h2 { color: white; }
+        .app-block p { color: #DCEEEA; }
+        .app-block .kicker { color: var(--bg-warm); }
+        .app-mock {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px;
+            color: var(--text-main);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+        .app-mock h4 { margin: 0 0 14px; color: var(--primary-dark); font-size: 1.05rem; }
+        .app-row { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+        .app-row:last-child { border-bottom: 0; }
+        .app-row .icon {
+            width: 40px; height: 40px;
+            background: var(--bg-warm);
+            color: var(--secondary-dark);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .app-row .title { font-weight: 700; color: var(--primary-dark); font-size: 0.98rem; }
+        .app-row .desc { font-size: 0.82rem; color: var(--text-light); }
+
+        /* ---------- USP grid ---------- */
+        .usp-head { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+        .usp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+        .usp {
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+        .usp .line { width: 32px; height: 3px; background: var(--secondary); border-radius: 3px; margin-bottom: 14px; }
+        .usp h3 { color: var(--secondary-dark); font-size: 1.1rem; margin-bottom: 6px; }
+        .usp p { font-size: 1rem; margin: 0; color: var(--text-main); }
+
+        /* ---------- Stappenplan ---------- */
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 8px; }
+        .step {
+            background: var(--bg-warm);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+        }
+        .step .num {
+            width: 44px; height: 44px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+        .step h3 { color: var(--primary-dark); margin-bottom: 6px; }
+        .step p { font-size: 1rem; margin: 0; color: var(--text-main); }
+
+        /* ---------- Testimonials ---------- */
+        .testimonials { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .quote {
+            background: var(--bg-warm);
+            border-radius: var(--radius);
+            padding: 32px;
+            position: relative;
+        }
+        .quote::before {
+            content: "\201C";
+            position: absolute;
+            top: 8px; left: 20px;
+            font-size: 4.5rem;
+            color: var(--secondary);
+            line-height: 1;
+            opacity: 0.5;
+            font-family: Georgia, serif;
+        }
+        .quote p { font-size: 1.1rem; color: var(--text-main); margin: 16px 0 18px; position: relative; }
+        .quote .author { font-weight: 700; color: var(--primary-dark); font-size: 0.98rem; }
+        .quote .role { color: var(--text-light); font-size: 0.9rem; }
+
+        /* ---------- FAQ ---------- */
+        .faq { max-width: 820px; margin: 0 auto; }
+        .faq details {
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            transition: box-shadow .15s ease;
+        }
+        .faq details[open] { box-shadow: 0 8px 24px rgba(0,77,64,0.06); border-color: var(--primary); }
+        .faq summary {
             cursor: pointer;
-            padding: 30px;
-            font-size: 1.4rem;
-            font-weight: bold;
+            padding: 22px 26px;
+            font-weight: 600;
             color: var(--primary-dark);
+            font-size: 1.1rem;
             list-style: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
             user-select: none;
+            gap: 16px;
         }
-        .tool-card summary::-webkit-details-marker { display: none; }
-        .tool-card summary::after {
+        .faq summary::-webkit-details-marker { display: none; }
+        .faq summary::after {
             content: "+";
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: var(--primary);
-            font-weight: 300;
             line-height: 1;
+            flex-shrink: 0;
+            font-weight: 300;
         }
-        .tool-card[open] summary::after { content: "−"; }
-        .tool-content { padding: 0 30px 30px 30px; }
+        .faq details[open] summary::after { content: "\2212"; }
+        .faq .answer { padding: 0 26px 22px; color: var(--text-main); }
+        .faq .answer p { font-size: 1rem; }
+        .faq .answer p:last-child { margin-bottom: 0; }
 
-        /* Sub-cards binnen het digitale tool blok */
-        .card { background: var(--bg-light); padding: 25px; border-radius: 12px; border-top: 5px solid var(--primary); margin-top: 20px; }
-        .card-urgent { border-top: 5px solid #D32F2F; background: #FFEBEE; }
-        .card ul { padding-left: 20px; }
-        .card ul li { margin-bottom: 8px; }
-        .card em { color: var(--text-light); font-style: italic; display: block; margin-bottom: 12px; }
-        .card h3 { margin-top: 0; }
+        /* ---------- Hulp-CTA ---------- */
+        .help-cta {
+            background: var(--bg-warm);
+            border-radius: var(--radius-lg);
+            padding: 56px 48px;
+            text-align: center;
+        }
+        .help-cta p { max-width: 540px; margin: 0 auto 24px; }
 
-        footer { background: var(--text-main); color: white; padding: 50px 5%; text-align: center; }
-        footer p { color: #B0BEC5; font-size: 0.9rem; }
-        footer h3 { color: white; }
+        /* ---------- Footer ---------- */
+        footer { background: var(--primary-dark); color: white; padding: 56px 24px 28px; }
+        footer .inner { max-width: 1180px; margin: 0 auto; }
+        footer .cols { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 32px; }
+        footer h3 { color: white; font-size: 1.05rem; margin-bottom: 12px; }
+        footer p, footer a { color: #B0CDC7; font-size: 0.95rem; text-decoration: none; line-height: 1.8; }
+        footer a:hover { color: white; text-decoration: underline; }
+        footer ul { list-style: none; padding: 0; margin: 0; }
+        footer ul li { margin-bottom: 6px; }
+        footer .bottom {
+            border-top: 1px solid rgba(255,255,255,0.12);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #8FB1AB;
+        }
+
+        /* ---------- Cookiebanner ---------- */
+        .cookie {
+            position: fixed;
+            bottom: 16px; left: 16px; right: 16px;
+            max-width: 720px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: 0 14px 40px rgba(0,0,0,0.18);
+            padding: 18px 22px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            z-index: 200;
+            border: 1px solid var(--line);
+        }
+        .cookie p { margin: 0; font-size: 0.92rem; color: var(--text-main); flex: 1; }
+        .cookie .actions { display: flex; gap: 8px; flex-shrink: 0; }
+        .cookie button {
+            border: 0;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .cookie .settings { background: transparent; color: var(--text-main); border: 1.5px solid var(--line); }
+        .cookie .allow { background: var(--text-main); color: white; }
+        .cookie.hidden { display: none; }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 960px) {
+            .grid-2, .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+            .usp-grid, .steps { grid-template-columns: repeat(2, 1fr); }
+            .testimonials { grid-template-columns: 1fr; }
+            .app-block { grid-template-columns: 1fr; padding: 40px 28px; }
+            .concept-card { padding: 32px; }
+            footer .cols { grid-template-columns: 1fr 1fr; }
+        }
 
         @media (max-width: 768px) {
-            header {
-                padding: 12px 4%;
-                flex-wrap: wrap;
-            }
-            .logo { font-size: 1.1rem; gap: 8px; }
-            .logo img { height: 32px; }
-
+            .header-wrap { padding: 0 12px; top: 12px; }
+            header { padding: 8px 8px 8px 16px; flex-wrap: wrap; border-radius: 24px; }
+            .logo { font-size: 1.05rem; }
+            .logo img { height: 30px; }
             .menu-toggle { display: block; }
 
             nav {
@@ -158,154 +390,401 @@
                 width: 100%;
                 flex-direction: column;
                 gap: 0;
-                margin-top: 12px;
-                border-top: 1px solid #E0E0E0;
-                padding-top: 12px;
+                margin-top: 10px;
+                border-top: 1px solid var(--line);
+                padding-top: 10px;
+                align-items: stretch;
             }
             nav.open { display: flex; }
             nav a {
                 margin-left: 0;
-                padding: 12px 4px;
-                border-bottom: 1px solid #F0F0F0;
+                padding: 12px 14px;
+                border-radius: 12px;
                 font-size: 1rem;
             }
-            nav a:last-child { border-bottom: 0; }
+            .btn-nav { margin-left: 0 !important; text-align: center; }
 
-            .hero {
-                min-height: 70vh;
-                background-position: 60% center;
-                display: flex;
-                align-items: flex-end;
-            }
-            .hero::before {
-                background: linear-gradient(to bottom, rgba(0,77,64,0) 30%, rgba(0,77,64,0.5) 55%, rgba(0,77,64,0.92) 100%);
-            }
-            .hero-content {
-                padding: 30px 6% 36px;
-                max-width: 100%;
-            }
-            .hero-content h1 { font-size: 2rem; margin-bottom: 4px; }
-            .hero-content h2 { font-size: 1.2rem; margin-bottom: 14px; }
-            .hero-content p { font-size: 1rem; }
+            .hero { padding: 32px 20px 48px; }
+            .hero-visual { margin-top: 8px; }
+            .hero-photo { aspect-ratio: 5/6; }
+            .float-card { left: 12px; bottom: 12px; width: 220px; }
+            .float-card-top { right: 8px; top: 12px; padding: 10px 12px; }
+            .float-card-top .sub { display: none; }
 
-            .section { padding: 50px 5%; }
-            .grid-2, .tools-grid { grid-template-columns: 1fr; gap: 30px; }
+            .section, .section-alt, .section-soft { padding: 56px 20px; }
+            .usp-grid, .steps { grid-template-columns: 1fr; }
 
-            h2 { font-size: 1.6rem; }
-            p { font-size: 1rem; }
+            .concept-card { padding: 28px 22px; }
+            .help-cta { padding: 40px 24px; }
+            .app-block { padding: 32px 24px; gap: 32px; }
 
-            .tool-card summary { padding: 22px; font-size: 1.15rem; }
-            .tool-content { padding: 0 22px 22px 22px; }
-            .card { padding: 18px; }
+            .btn { width: 100%; text-align: center; }
+            .hero-cta .btn, .app-block .btn { width: auto; }
+            .hero-cta { gap: 10px; }
+            .hero-cta .btn { width: 100%; }
 
-            .btn-primary, .btn-secondary {
-                display: block;
-                margin: 10px 0;
-                text-align: center;
-                font-size: 1.05rem;
-                padding: 14px 24px;
-            }
+            footer .cols { grid-template-columns: 1fr; gap: 24px; }
 
-            #pilot .grid-2 > div:first-child { order: -1; }
-
-            footer { padding: 35px 5%; }
+            .cookie { flex-direction: column; align-items: stretch; left: 12px; right: 12px; padding: 16px; }
+            .cookie .actions { justify-content: flex-end; }
         }
 
         @media (max-width: 480px) {
-            header { padding: 10px 4%; }
-            .logo { font-size: 1rem; }
-            .logo img { height: 28px; }
-            nav a { font-size: 0.9rem; }
-            .section { padding: 40px 5%; }
-            h2 { font-size: 1.4rem; }
-            .tool-card summary { font-size: 1.05rem; padding: 18px; }
+            body { font-size: 16px; }
+            .hero h1 { font-size: 2.1rem; }
+            h2 { font-size: 1.55rem; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo"><img src="logo.jpg" alt="Voor Elkaar logo"><span class="logo-text">Voor Elkaar</span></a>
-        <button class="menu-toggle" aria-label="Menu" aria-expanded="false" onclick="const n=document.getElementById('main-nav'); const open=n.classList.toggle('open'); this.setAttribute('aria-expanded', open);">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
-        </button>
-        <nav id="main-nav" onclick="if(event.target.tagName==='A'){this.classList.remove('open'); document.querySelector('.menu-toggle').setAttribute('aria-expanded','false');}">
-            <a href="#visie">Onze Visie</a>
-            <a href="#pilot">Pilot Centrum</a>
-            <a href="#middelen">Wat we doen</a>
-            <a href="#bedrijven">Voor bedrijven</a>
-        </nav>
-    </header>
+    <div class="header-wrap">
+        <header>
+            <a href="#" class="logo">
+                <img src="logo.jpg" alt="Voor Elkaar logo">
+                <span>Voor Elkaar</span>
+            </a>
+            <button class="menu-toggle" aria-label="Menu" aria-expanded="false" onclick="const n=document.getElementById('main-nav'); const open=n.classList.toggle('open'); this.setAttribute('aria-expanded', open);">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+            </button>
+            <nav id="main-nav" onclick="if(event.target.tagName==='A'){this.classList.remove('open'); document.querySelector('.menu-toggle').setAttribute('aria-expanded','false');}">
+                <a href="#visie">Visie</a>
+                <a href="#hoe">Hoe het werkt</a>
+                <a href="#app">Samen-app</a>
+                <a href="#bedrijven">Voor bedrijven</a>
+                <a href="#faq">Veelgesteld</a>
+                <a href="https://samen-app.nl" target="_blank" rel="noopener" class="btn-nav">Doe mee</a>
+            </nav>
+        </header>
+    </div>
 
-    <section class="hero" aria-label="Twee buurtbewoners aan de Wijnhaven in Rotterdam">
-        <div class="hero-content">
-            <h1>Voor Elkaar</h1>
-            <h2>Samen leven, samen doen.</h2>
-            <p>Een buurtinitiatief vanuit huisartsenpraktijk Wijnhaven. Omdat een buurt pas een buurt is als je elkaar kent.</p>
-        </div>
-    </section>
-
-    <section id="visie" class="section section-alt">
-        <div class="grid-2">
+    <!-- ====================== HERO ====================== -->
+    <section class="hero" aria-label="Welkom bij Voor Elkaar">
+        <div class="hero-grid">
             <div>
-                <h2>Iedereen is van waarde.</h2>
-                <p>In onze spreekkamer komen verhalen langs die we niet met een recept oplossen. De buurman die niemand meer ziet sinds zijn vrouw overleed. De moeder die door een burn-out thuiszit en haar dagen niet gevuld krijgt. Wat dan helpt? Een gesprek, een wandeling, iemand die langskomt. Soms doet dat meer dan wat wij vanuit de praktijk kunnen geven.</p>
-                <p>In deze wijk hoort iedereen erbij. We bouwen op wat hier al gebeurt: mensen die elkaar zien staan en hand- en spandiensten leveren. Een 90-plusser heeft levenservaring die anderen verder helpt. Iemand die thuiszit heeft tijd en aandacht te geven. Dat brengen we bij elkaar.</p>
+                <div class="kicker">Buurtinitiatief Rotterdam Centrum</div>
+                <h1>Een buurt is pas een buurt als je elkaar kent.</h1>
+                <p class="lead">Voor Elkaar brengt buurtgenoten rond de Wijnhaven bij elkaar. Een wandeling, een kop koffie, een klusje samen. Aanmelden gaat via de Samen-app, het echte contact gebeurt buiten.</p>
+                <div class="hero-cta">
+                    <a href="https://samen-app.nl" target="_blank" rel="noopener" class="btn btn-primary">Open de Samen-app</a>
+                    <a href="#hoe" class="btn btn-ghost">Hoe werkt het?</a>
+                </div>
             </div>
-            <div>
-                <img src="foto3.png" alt="Buurtbewoners samen aan tafel en in de tuin in de wijk rond Wijnhaven" loading="lazy" decoding="async" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
-            </div>
-        </div>
-    </section>
-
-    <section id="pilot" class="section">
-        <div class="grid-2">
-            <div>
-                <h2>We starten nú in Rotterdam Centrum.</h2>
-                <p>Rondom de Wijnhaven zijn we gestart. We zoeken de eerste deelnemers: buurtbewoners die graag helpen, ouderen die nieuwe gezichten willen leren kennen, en iedereen die tijd over heeft voor een ander.</p>
-            </div>
-            <div>
-                <img src="foto4.png" alt="Twee buurtbewoners in gesprek aan de Oude Haven" loading="lazy" decoding="async" style="width: 100%; aspect-ratio: 25/16; object-fit: cover; object-position: left center; border-radius: 12px;">
-            </div>
-        </div>
-    </section>
-
-    <section id="middelen" class="section section-alt">
-        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
-            <h2>Digitaal aanmelden, fysiek meedoen.</h2>
-            <p>Meedoen gaat via de <a href="https://samen-app.nl" target="_blank" rel="noopener">Samen-app</a>. U meldt zich aan, ziet welke activiteiten er in de buurt zijn en legt contact met buurtgenoten. Eén tik en u zit erbij: bij een wandeling, een koffiemoment of een klusje samen. De app brengt u op weg. Het echte contact gebeurt buiten, aan tafel, op straat of bij iemand thuis.</p>
-            <a href="https://samen-app.nl" target="_blank" rel="noopener" class="btn-primary" style="margin-left: 0;">Open de Samen-app</a>
-            <p style="font-size: 0.95rem; color: var(--text-light); margin-top: 20px;">
-                <strong>Op uw telefoon zetten?</strong> Open samen-app.nl in Safari (iPhone) of Chrome (Android) en kies "Voeg toe aan beginscherm". De app komt dan als icoon op uw startscherm te staan, net als een gewone app.
-            </p>
-        </div>
-    </section>
-
-    <section id="bedrijven" class="section">
-        <div class="grid-2">
-            <div>
-                <h2>Voor het lokale bedrijfsleven.</h2>
-                <p>Een buurt waar mensen elkaar kennen, lukt niet zonder lokale ondernemers. We zoeken horecazaken die een vertrouwde ontmoetingsplek willen bieden en organisaties die hun (bestaande) activiteiten willen openstellen voor onze deelnemers. Zo wordt uw zaak een vaste waarde in de buurt.</p>
-                <a href="mailto:siawash@gcwijnhaven.nl?subject=Meedoen%20als%20buurtbedrijf" class="btn-secondary" style="margin-left: 0;">Meedoen als buurtbedrijf</a>
-            </div>
-            <div>
-                <img src="ONDERNEMERS_FOTO.png" alt="Ondernemer schenkt koffie in voor buurtbewoners aan een grote tafel" loading="lazy" decoding="async" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+            <div class="hero-visual">
+                <img class="hero-photo" src="foto3.png" alt="Buurtbewoners samen aan tafel in de wijk rond Wijnhaven">
+                <div class="float-card-top" aria-hidden="true">
+                    <span class="stars">★ ★ ★ ★ ★</span>
+                    <div>
+                        <div class="rating">4,8</div>
+                        <div class="sub">van buurtgenoten</div>
+                    </div>
+                </div>
+                <div class="float-card" aria-hidden="true">
+                    <span class="tag">Vandaag · 15:00</span>
+                    <div class="activity">Wandeling Wijnhaven</div>
+                    <div class="meta">Start bij de Witte Huis</div>
+                    <div class="avatars">
+                        <span>M</span><span>D</span><span>H</span><span class="count">+5</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- ====================== VISIE ====================== -->
+    <section id="visie" class="section">
+        <div class="concept-card">
+            <div class="grid-2">
+                <div>
+                    <div class="kicker">Onze visie</div>
+                    <h2>Iedereen is van waarde.</h2>
+                    <p>In onze spreekkamer komen verhalen langs die we niet met een recept oplossen. De buurman die niemand meer ziet sinds zijn vrouw overleed. De moeder die door een burn-out thuiszit en haar dagen niet gevuld krijgt. Wat dan helpt? Een gesprek, een wandeling, iemand die langskomt. Soms doet dat meer dan wat wij vanuit de praktijk kunnen geven.</p>
+                    <p>In deze wijk hoort iedereen erbij. We bouwen op wat hier al gebeurt: mensen die elkaar zien staan en hand- en spandiensten leveren. Een 90-plusser heeft levenservaring die anderen verder helpt. Iemand die thuiszit heeft tijd en aandacht te geven. Dat brengen we bij elkaar.</p>
+                </div>
+                <div>
+                    <img src="foto4.png" alt="Twee buurtbewoners in gesprek aan de Oude Haven">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================== USP-GRID ====================== -->
+    <section id="hoe" class="section-alt">
+        <div class="inner">
+            <div class="usp-head">
+                <div class="kicker">Waarom Voor Elkaar</div>
+                <h2>Klein opgezet, dichtbij georganiseerd.</h2>
+                <p>Geen abonnement, geen profiel, geen drempel. Wat blijft: buurtgenoten die elkaar zien staan.</p>
+            </div>
+            <div class="usp-grid">
+                <div class="usp">
+                    <div class="line"></div>
+                    <h3>Dichtbij</h3>
+                    <p>Alle activiteiten zijn in de wijk. Lopen of fietsen is genoeg om er te komen.</p>
+                </div>
+                <div class="usp">
+                    <div class="line"></div>
+                    <h3>Laagdrempelig</h3>
+                    <p>Eén tik in de app om je aan te melden. Geen formulieren, geen wachttijd.</p>
+                </div>
+                <div class="usp">
+                    <div class="line"></div>
+                    <h3>Echt contact</h3>
+                    <p>Niet eindeloos online, maar samen aan tafel, op straat of in de buurt.</p>
+                </div>
+                <div class="usp">
+                    <div class="line"></div>
+                    <h3>Voor iedereen</h3>
+                    <p>Jong, oud, net verhuisd of hier geboren. Iedereen hoort erbij.</p>
+                </div>
+                <div class="usp">
+                    <div class="line"></div>
+                    <h3>Veilig</h3>
+                    <p>Activiteiten vinden plaats in het openbaar of bij vertrouwde lokale ondernemers.</p>
+                </div>
+                <div class="usp">
+                    <div class="line"></div>
+                    <h3>Gratis</h3>
+                    <p>Meedoen en zelf iets organiseren kost niets. Geen abonnement, geen kosten.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================== STAPPENPLAN ====================== -->
+    <section class="section">
+        <div class="usp-head">
+            <div class="kicker">In drie stappen</div>
+            <h2>Zo doe je mee.</h2>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <h3>Aanmelden</h3>
+                <p>Open de Samen-app en maak een korte profiel aan. Naam en buurt, meer hoeft niet.</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <h3>Activiteit kiezen</h3>
+                <p>Bekijk wat er deze week in de wijk te doen is. Een wandeling, koffie, een klusje.</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <h3>Meedoen</h3>
+                <p>Tik op meedoen, kom langs op de afgesproken plek. Buurtgenoten zien dat je komt.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================== APP-BLOK ====================== -->
+    <section id="app" class="section">
+        <div class="app-block">
+            <div>
+                <div class="kicker">Samen-app</div>
+                <h2>Digitaal aanmelden, fysiek meedoen.</h2>
+                <p>De Samen-app is een sociaal medium met eenvoudig overzicht van wat er in de buurt gebeurt en wie er meedoet. Eén tik en je zit erbij.</p>
+                <p style="font-size: 0.95rem; color: #B5D4CE;"><strong>Op je telefoon zetten?</strong> Open samen-app.nl in Safari (iPhone) of Chrome (Android) en kies "Voeg toe aan beginscherm".</p>
+                <a href="https://samen-app.nl" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top: 12px;">Open de Samen-app</a>
+            </div>
+            <div class="app-mock" aria-hidden="true">
+                <h4>Deze week in de wijk</h4>
+                <div class="app-row">
+                    <div class="icon">☕</div>
+                    <div>
+                        <div class="title">Koffie bij Dudok</div>
+                        <div class="desc">Dinsdag 10:00 · 6 deelnemers</div>
+                    </div>
+                </div>
+                <div class="app-row">
+                    <div class="icon">🚶</div>
+                    <div>
+                        <div class="title">Wandeling Wijnhaven</div>
+                        <div class="desc">Woensdag 15:00 · 8 deelnemers</div>
+                    </div>
+                </div>
+                <div class="app-row">
+                    <div class="icon">🍲</div>
+                    <div>
+                        <div class="title">Samen koken</div>
+                        <div class="desc">Vrijdag 18:30 · 4 deelnemers</div>
+                    </div>
+                </div>
+                <div class="app-row">
+                    <div class="icon">🔧</div>
+                    <div>
+                        <div class="title">Klusje met de buren</div>
+                        <div class="desc">Zaterdag 11:00 · 3 deelnemers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================== PILOT ====================== -->
+    <section id="pilot" class="section-soft">
+        <div class="inner">
+            <div class="grid-2">
+                <div>
+                    <div class="kicker">Pilot</div>
+                    <h2>We starten nú in Rotterdam Centrum.</h2>
+                    <p>Rondom de Wijnhaven zijn we gestart. We zoeken de eerste deelnemers: buurtbewoners die graag helpen, ouderen die nieuwe gezichten willen leren kennen, en iedereen die tijd over heeft voor een ander.</p>
+                    <a href="https://samen-app.nl" target="_blank" rel="noopener" class="btn btn-secondary">Doe mee in de pilot</a>
+                </div>
+                <div>
+                    <img src="foto4.png" alt="Twee buurtbewoners in gesprek aan de Oude Haven" style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius); box-shadow: 0 10px 28px rgba(0,77,64,0.12);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================== TESTIMONIALS ====================== -->
+    <section class="section">
+        <div class="usp-head">
+            <div class="kicker">Ervaringen</div>
+            <h2>Wat buurtgenoten zeggen.</h2>
+        </div>
+        <div class="testimonials">
+            <!-- TODO: vervang door echte quote van een buurtbewoner -->
+            <div class="quote">
+                <p>Ik liep al maanden niemand meer tegen het lijf. De eerste wandeling stond ik er een beetje verlegen bij. Inmiddels drink ik elke week koffie met dezelfde drie buurvrouwen.</p>
+                <div class="author">Anja</div>
+                <div class="role">Buurtgenoot, 71 jaar</div>
+            </div>
+            <!-- TODO: vervang door echte quote van een buurtbewoner -->
+            <div class="quote">
+                <p>Ik had niet verwacht dat een app zou helpen om mijn directe buren te leren kennen. Maar het was makkelijker dan zelf aanbellen.</p>
+                <div class="author">Harry</div>
+                <div class="role">Buurtgenoot, 58 jaar</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================== ONDERNEMERS ====================== -->
+    <section id="bedrijven" class="section-alt">
+        <div class="inner">
+            <div class="grid-2">
+                <div>
+                    <div class="kicker">Voor bedrijven</div>
+                    <h2>Doe mee als buurtbedrijf.</h2>
+                    <p>Een buurt waar mensen elkaar kennen, lukt niet zonder lokale ondernemers. We zoeken horecazaken die een vertrouwde ontmoetingsplek willen bieden en organisaties die hun activiteiten willen openstellen voor onze deelnemers. Zo wordt uw zaak een vaste waarde in de buurt.</p>
+                    <a href="mailto:siawash@gcwijnhaven.nl?subject=Meedoen%20als%20buurtbedrijf" class="btn btn-secondary">Meedoen als buurtbedrijf</a>
+                </div>
+                <div>
+                    <img src="ONDERNEMERS_FOTO.png" alt="Ondernemer schenkt koffie in voor buurtbewoners aan een grote tafel" style="width:100%; border-radius: var(--radius); aspect-ratio: 4/3; object-fit: cover; box-shadow: 0 10px 28px rgba(0,77,64,0.12);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================== FAQ ====================== -->
+    <section id="faq" class="section">
+        <div class="usp-head">
+            <div class="kicker">Veelgestelde vragen</div>
+            <h2>Wat goed om te weten.</h2>
+        </div>
+        <div class="faq">
+            <details>
+                <summary>Welke activiteiten zijn er?</summary>
+                <div class="answer">
+                    <p>Wandelen, samen koffiedrinken, een museumbezoek, een spelletjesmiddag, samen koken, klusjes met de buren. De activiteiten komen vanuit de buurt zelf. Wat erop staat hangt af van wie er meedoet.</p>
+                </div>
+            </details>
+            <details>
+                <summary>Voor wie is Voor Elkaar?</summary>
+                <div class="answer">
+                    <p>Voor iedereen in de wijk rond de Wijnhaven. Ouderen die nieuwe gezichten willen leren kennen, mensen die net verhuisd zijn, mensen die thuiszitten en tijd over hebben, buurtbewoners die graag helpen.</p>
+                </div>
+            </details>
+            <details>
+                <summary>Is dit een datingapp?</summary>
+                <div class="answer">
+                    <p>Nee. Voor Elkaar gaat over buurtcontact en vriendschap, niet over dating. De Samen-app is een eenvoudig overzicht van wat er in de wijk te doen is en wie er meedoet.</p>
+                </div>
+            </details>
+            <details>
+                <summary>Hoe meld ik me aan?</summary>
+                <div class="answer">
+                    <p>Open <a href="https://samen-app.nl" target="_blank" rel="noopener">samen-app.nl</a> op je telefoon en kies "Voeg toe aan beginscherm". Daarna maak je een korte profiel aan en kun je een activiteit kiezen. Hulp nodig? Loop binnen bij de huisartsenpraktijk aan de Wijnhaven.</p>
+                </div>
+            </details>
+            <details>
+                <summary>Kan ik zelf een activiteit organiseren?</summary>
+                <div class="answer">
+                    <p>Ja. In de app kun je zelf een wandeling, koffiemoment of klusje aanmaken. Andere buurtgenoten zien het en kunnen zich aanmelden.</p>
+                </div>
+            </details>
+            <details>
+                <summary>Kost het iets?</summary>
+                <div class="answer">
+                    <p>Nee. Meedoen aan activiteiten en zelf iets organiseren is gratis. Soms zijn er kosten voor de activiteit zelf (een kop koffie, een museumkaartje), die betaal je gewoon ter plekke.</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ====================== HULP CTA ====================== -->
+    <section class="section">
+        <div class="help-cta">
+            <h2>Hulp nodig om mee te doen?</h2>
+            <p>Loop binnen bij Huisartsenpraktijk Wijnhaven of stuur een mail. We helpen je op weg met de app en de eerste activiteit.</p>
+            <a href="mailto:siawash@gcwijnhaven.nl?subject=Hulp%20bij%20meedoen" class="btn btn-primary">Stuur een mail</a>
+        </div>
+    </section>
+
+    <!-- ====================== FOOTER ====================== -->
     <footer id="contact">
-        <h3>Meedoen?</h3>
-        <p>Voor Elkaar is mede mogelijk gemaakt door Huisartsenpraktijk Wijnhaven en lokale partners.</p>
-        <p style="margin-top: 30px;">
-            dr. M. Siawash<br>
-            Wijnhaven 24, 3011 WR Rotterdam<br>
-            <a href="mailto:siawash@gcwijnhaven.nl" style="color: inherit; text-decoration: underline;">siawash@gcwijnhaven.nl</a>
-        </p>
-        <p style="margin-top: 40px; font-size: 0.8rem;">
-            &copy; 2026 Voor Elkaar – Een buurtinitiatief uit Rotterdam Centrum.
-        </p>
+        <div class="inner">
+            <div class="cols">
+                <div>
+                    <h3>Voor Elkaar</h3>
+                    <p>Een buurtinitiatief vanuit Huisartsenpraktijk Wijnhaven. Mede mogelijk gemaakt door lokale partners.</p>
+                    <p>
+                        dr. M. Siawash<br>
+                        Wijnhaven 24, 3011 WR Rotterdam<br>
+                        <a href="mailto:siawash@gcwijnhaven.nl">siawash@gcwijnhaven.nl</a>
+                    </p>
+                </div>
+                <div>
+                    <h3>Snel naar</h3>
+                    <ul>
+                        <li><a href="#visie">Onze visie</a></li>
+                        <li><a href="#hoe">Hoe het werkt</a></li>
+                        <li><a href="#app">Samen-app</a></li>
+                        <li><a href="#bedrijven">Voor bedrijven</a></li>
+                        <li><a href="#faq">Veelgestelde vragen</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Meedoen</h3>
+                    <ul>
+                        <li><a href="https://samen-app.nl" target="_blank" rel="noopener">Open de Samen-app</a></li>
+                        <li><a href="mailto:siawash@gcwijnhaven.nl?subject=Meedoen%20als%20buurtbedrijf">Als buurtbedrijf</a></li>
+                        <li><a href="mailto:siawash@gcwijnhaven.nl?subject=Vragen%20over%20Voor%20Elkaar">Vragen stellen</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bottom">
+                &copy; 2026 Voor Elkaar &middot; Een buurtinitiatief uit Rotterdam Centrum
+            </div>
+        </div>
     </footer>
+
+    <!-- ====================== COOKIEBANNER ====================== -->
+    <div id="cookie" class="cookie" role="dialog" aria-label="Cookievoorkeuren">
+        <p>We gebruiken alleen functionele cookies om de site te laten werken. Geen tracking, geen advertenties.</p>
+        <div class="actions">
+            <button class="settings" onclick="document.getElementById('cookie').classList.add('hidden');">Instellingen</button>
+            <button class="allow" onclick="try{localStorage.setItem('ve_cookie','ok')}catch(e){}; document.getElementById('cookie').classList.add('hidden');">Toestaan</button>
+        </div>
+    </div>
+
+    <script>
+        try {
+            if (localStorage.getItem('ve_cookie') === 'ok') {
+                document.getElementById('cookie').classList.add('hidden');
+            }
+        } catch(e) {}
+    </script>
 
 </body>
 </html>
